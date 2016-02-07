@@ -1,0 +1,7 @@
+.project
+.settings/
+build.log
+build/
+target/
+.classpath
+o11nplugin-redis/src/main/dar/VSO-INF/vso.xml
