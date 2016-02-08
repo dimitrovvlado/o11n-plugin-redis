@@ -26,11 +26,11 @@ public class CustomModule extends AbstractModule {
         this.plugin = new Plugin();
 
         plugin.setApiPrefix("Redis");
-        plugin.setIcon("default-32x32.png");
-        plugin.setDescription("Redis");
+        plugin.setIcon("redis.png");
+        plugin.setDescription("Redis plug-in for vRO");
         plugin.setDisplayName("Redis");
         plugin.setName("Redis");
-        plugin.setPackages(Collections.singletonList("o11nplugin-example-package-${project.version}.package"));
+        plugin.setPackages(Collections.singletonList("o11nplugin-redis-package-${project.version}.package"));
         plugin.setAdaptorClassName(com.vmware.o11n.plugin.redis.RedisPluginAdaptor.class);
     }
 }
