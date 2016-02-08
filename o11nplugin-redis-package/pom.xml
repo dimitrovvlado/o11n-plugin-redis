@@ -26,7 +26,7 @@
                 <version>${vco.version}</version>
                 <extensions>true</extensions>
                 <configuration>
-                    <packageName>com.vmware.o11n.plugin.redis</packageName>
+                    <packageName>com.vmware.library.redis</packageName>
                     <!-- Set the local path to the *.vmokeystore file used to sign the content -->
                     <keystoreLocation>${keystoreLocation}</keystoreLocation>
                     <keystorePassword>${keystorePassword}</keystorePassword>

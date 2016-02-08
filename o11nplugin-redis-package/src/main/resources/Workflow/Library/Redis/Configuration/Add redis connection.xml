@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="8f3b8033-f078-463b-977a-3c41dfd2294e" version="1.0.0" api-version="6.0.0" allowed-operations="vef" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Add redis connection]]></display-name>
+  <position y="9.545454545454543" x="45.0"/>
+  <input>
+    <param name="name" type="string">
+      <description><![CDATA[Connection name]]></description>
+    </param>
+    <param name="host" type="string">
+      <description><![CDATA[Redis host]]></description>
+    </param>
+    <param name="port" type="number">
+      <description><![CDATA[Redis port]]></description>
+    </param>
+  </input>
+  <workflow-item  name="item0" type="end" end-mode="0">
+    <position y="9.045454545454543" x="324.5"/>
+  </workflow-item >
+  <workflow-item  name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Create connection]]></display-name>
+    <script encoded="false"><![CDATA[var connectionId = RedisConnectionManager.save(name, host, port);
+System.log("Created connection with ID: " + connectionId);]]></script>
+    <in-binding>
+      <bind name="name" type="string" export-name="name">
+        <description><![CDATA[Connection name]]></description>
+      </bind>
+      <bind name="host" type="string" export-name="host">
+        <description><![CDATA[Redis host]]></description>
+      </bind>
+      <bind name="port" type="number" export-name="port">
+        <description><![CDATA[Redis port]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <position y="19.045454545454543" x="144.5"/>
+  </workflow-item >
+  <presentation>
+    <p-param name="name">
+      <desc><![CDATA[Connection name]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="host">
+      <desc><![CDATA[Redis host]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+    <p-param name="port">
+      <desc><![CDATA[Redis port]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+      <p-qual kind="static" name="defaultValue" type="number"><![CDATA[6379.0]]></p-qual>
+    </p-param>
+  </presentation>
+</workflow>
