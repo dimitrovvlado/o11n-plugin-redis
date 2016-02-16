@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>10.23.34.248:8281</comment>
+<entry key="vso-build-nb">3168749</entry>
+<entry key="pkg-description"></entry>
+<entry key="pkg-name">com.vmware.library.redis</entry>
+<entry key="used-plugins"></entry>
+<entry key="pkg-owner">O=VMware,OU=Unknow,CN=vCO sof2-lab3-dhcp739.eng.vmware.com 251f7a41-1d24-4a30-a07c-d503054cf70e</entry>
+<entry key="vso-version">7.0.0.3168749</entry>
+<entry key="pkg-id">8a97a27852c11d950152c1c06c160013</entry>
+</properties>
