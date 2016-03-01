@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Exported from [server]</comment>
+<entry key="categoryPath">Library.Redis</entry>
+<entry key="name">Ping server</entry>
+<entry key="type">Workflow</entry>
+<entry key="id">fed16a22-e985-4fbe-8092-5df8221577af</entry>
+</properties>

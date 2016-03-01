@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<workflow xmlns="http://vmware.com/vco/workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://vmware.com/vco/workflow http://vmware.com/vco/workflow/Workflow-v4.xsd" root-name="item1" object-name="workflow:name=generic" id="fed16a22-e985-4fbe-8092-5df8221577af" version="1.0.0" api-version="6.0.0" allowed-operations="vef" restartMode="1" resumeFromFailedMode="0">
+  <display-name><![CDATA[Ping server]]></display-name>
+  <position y="9.545454545454543" x="65.0"/>
+  <input>
+    <param name="connection" type="Redis:Connection">
+      <description><![CDATA[Redis connection]]></description>
+    </param>
+  </input>
+  <workflow-item  name="item0" type="end" end-mode="0">
+    <position y="9.045454545454543" x="344.5"/>
+  </workflow-item >
+  <workflow-item  name="item1" out-name="item0" type="task">
+    <display-name><![CDATA[Ping]]></display-name>
+    <script encoded="false"><![CDATA[var resp = connection.ping();
+System.log(resp);]]></script>
+    <in-binding>
+      <bind name="connection" type="Redis:Connection" export-name="connection">
+        <description><![CDATA[Redis connection]]></description>
+      </bind>
+    </in-binding>
+    <out-binding/>
+    <position y="19.045454545454543" x="164.5"/>
+  </workflow-item >
+  <presentation>
+    <p-param name="connection">
+      <desc><![CDATA[Redis connection]]></desc>
+      <p-qual kind="static" name="mandatory" type="boolean"><![CDATA[true]]></p-qual>
+    </p-param>
+  </presentation>
+</workflow>

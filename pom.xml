@@ -9,7 +9,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <vco.version>7.0.0</vco.version>
+        <vco.version>7.0.2</vco.version>
+        <jedis.version>2.8.0</jedis.version>
+        <commons.pool.version>2.4.2</commons.pool.version>
     </properties>
 
     <repositories>
@@ -42,6 +44,18 @@
                 <artifactId>o11n-sdkapi</artifactId>
                 <version>${vco.version}</version>
                 <scope>provided</scope>
+            </dependency>
+
+            <!--Third party dependencies-->
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons.pool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

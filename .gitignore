@@ -4,4 +4,5 @@ build.log
 build/
 target/
 .classpath
+.DS_Store
 o11nplugin-redis/src/main/dar/VSO-INF/vso.xml

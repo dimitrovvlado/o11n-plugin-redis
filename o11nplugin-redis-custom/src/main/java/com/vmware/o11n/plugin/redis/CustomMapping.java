@@ -10,10 +10,20 @@ public class CustomMapping extends AbstractMapping {
 
     @Override
     public void define() {
+      //@formatter:off
+
         singleton(ConnectionManager.class);
 
-        wrap(Connection.class).andFind().using(ConnectionFinder.class).withIcon("connection.png");
+        wrap(Connection.class).
+            andFind().
+            using(ConnectionFinder.class).
+            withIcon("connection.png");
 
-        relateRoot().to(Connection.class).using(RootHasConnections.class).as("connections");
+        relateRoot().
+            to(Connection.class).
+            using(RootHasConnections.class).
+            as("connections");
+
+      //@formatter:on
     }
 }
