@@ -1,5 +1,10 @@
 package com.vmware.o11n.plugin.redis.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -16,10 +21,15 @@ import redis.clients.jedis.JedisPoolConfig;
 @Qualifier(value = "connection")
 @Scope(value = "prototype")
 public class Connection implements Findable {
+
+    private static final int DEFAULT_REDIS_DATABASE_INDEX = 0;
+
     /*
      * The connectionInfo which stands behind this live connection.
      */
     private ConnectionInfo connectionInfo;
+
+    private Map<Integer, Database> databases = null;
 
     private JedisPool pool;
 
@@ -61,137 +71,40 @@ public class Connection implements Findable {
         return getConnectionInfo().getName() + " [" + getConnectionInfo().getHost() + "]";
     }
 
+    public List<Database> getDatabases() {
+        if (databases == null) {
+            databases = new HashMap<>(16);
+            // Issue a call to Redis, to see how many databases are configured,
+            // default is 16
+            List<String> configs = getResource(DEFAULT_REDIS_DATABASE_INDEX).configGet("databases");
+            int numberOfInstances = Integer.parseInt(configs.get(1));
+            for (int index = 0; index < numberOfInstances; index++) {
+                databases.put(index, new Database(this, index));
+            }
+        }
+        return new ArrayList<>(databases.values());
+    }
+
+    @ExtensionMethod
+    public Database getDatabase(int index) {
+        return getDatabases().get(index);
+    }
+
+    @ExtensionMethod
+    public Database getDefaultDatabase() {
+        return getDatabase(DEFAULT_REDIS_DATABASE_INDEX);
+    }
+
     /**
      * Returns a redis connection from the pool.
-     */
-    public Jedis getResource() {
-        return getPool().getResource();
-    }
-
-    @ExtensionMethod
-    public String ping() {
-        try (Jedis jedis = getResource()) {
-            return jedis.ping();
-        }
-    }
-
-    /**
-     * If the key already exists and is a string, this command appends the
-     * provided value at the end of the string. If the key does not exist it is
-     * created and set as an empty string, so APPEND will be very similar to SET
-     * in this special case.
-     * <p>
-     * Time complexity: O(1). The amortized time complexity is O(1) assuming the
-     * appended value is small and the already present value is of any size,
-     * since the dynamic string library used by Redis will double the free space
-     * available on every reallocation.
      *
-     * @return Integer reply, specifically the total length of the string after
-     *         the append operation.
+     * @param index
+     *            the index of the database
      */
-    @ExtensionMethod
-    public Long append(String key, String value) {
-        try (Jedis jedis = getResource()) {
-            return jedis.append(key, value);
-        }
-    }
-
-    @ExtensionMethod
-    public String set(String key, String value, String nxxx, String expx, Integer time) {
-        try (Jedis jedis = getResource()) {
-            if (expx != null && time != null) {
-                return jedis.set(key, value, nxxx, expx, time);
-            }
-            if (nxxx != null) {
-                return jedis.set(key, value, nxxx);
-            }
-
-            return jedis.set(key, value);
-        }
-    }
-
-    @ExtensionMethod
-    public String get(String key) {
-        try (Jedis jedis = getResource()) {
-            return jedis.get(key);
-        }
-    }
-
-    @ExtensionMethod
-    public Boolean exists(String key) {
-        try (Jedis jedis = getResource()) {
-            return jedis.exists(key);
-        }
-    }
-
-    @ExtensionMethod
-    public Long exists(String[] key) {
-        try (Jedis jedis = getResource()) {
-            return jedis.exists(key);
-        }
-    }
-
-    @ExtensionMethod
-    public String[] blpop(int timeout, String[] args) {
-        try (Jedis jedis = getResource()) {
-            return jedis.blpop(timeout, args).toArray(new String[0]);
-        }
-    }
-
-    @ExtensionMethod
-    public Long rpush(String key, String[] strings) {
-        try (Jedis jedis = getResource()) {
-            return jedis.rpush(key, strings);
-        }
-    }
-
-    @ExtensionMethod
-    public Long rpushx(String key, String[] strings) {
-        try (Jedis jedis = getResource()) {
-            return jedis.rpushx(key, strings);
-        }
-    }
-
-    @ExtensionMethod
-    public Long lpush(String key, String[] strings) {
-        try (Jedis jedis = getResource()) {
-            return jedis.lpush(key, strings);
-        }
-    }
-
-    @ExtensionMethod
-    public Long lpushx(String key, String[] strings) {
-        try (Jedis jedis = getResource()) {
-            return jedis.lpushx(key, strings);
-        }
-    }
-
-    @ExtensionMethod
-    public Long incr(String key) {
-        try (Jedis jedis = getResource()) {
-            return jedis.incr(key);
-        }
-    }
-
-    @ExtensionMethod
-    public Long del(String key) {
-        try (Jedis jedis = getResource()) {
-            return jedis.del(key);
-        }
-    }
-
-    @ExtensionMethod
-    public String type(String key) {
-        try (Jedis jedis = getResource()) {
-            return jedis.type(key);
-        }
-    }
-
-    @ExtensionMethod
-    public String randomKey() {
-        try (Jedis jedis = getResource()) {
-            return jedis.randomKey();
-        }
+    public Jedis getResource(int index) {
+        Jedis resource = getPool().getResource();
+        resource.select(index);
+        return resource;
     }
 
     /*
