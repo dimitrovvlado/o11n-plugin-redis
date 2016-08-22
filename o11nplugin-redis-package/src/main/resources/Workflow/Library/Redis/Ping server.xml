@@ -12,7 +12,7 @@
   </workflow-item >
   <workflow-item  name="item1" out-name="item0" type="task">
     <display-name><![CDATA[Ping]]></display-name>
-    <script encoded="false"><![CDATA[var resp = connection.ping();
+    <script encoded="false"><![CDATA[var resp = connection.defaultDatabase.ping();
 System.log(resp);]]></script>
     <in-binding>
       <bind name="connection" type="Redis:Connection" export-name="connection">
