@@ -15,6 +15,8 @@ public class CustomMapping extends AbstractMapping {
     public void define() {
       //@formatter:off
 
+        convertWellKnownTypes();
+
         singleton(ConnectionManager.class);
 
         wrap(Connection.class).

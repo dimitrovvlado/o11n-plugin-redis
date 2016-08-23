@@ -3,7 +3,7 @@
 The Redis plug-in for vRealize Orchestrator is a a plug-in which provides integration capabilities with multiple [Redis](http://redis.io/) instances.
 
 ### Plugin download
-[o11nplugin-redis-1.0.0.vmoapp](https://github.com/dimitrovvlado/o11n-plugin-cache/blob/master/dist/o11nplugin-cache.vmoapp?raw=true) 
+[o11nplugin-redis-1.0.0.vmoapp](https://github.com/dimitrovvlado/o11n-plugin-redis/blob/master/dist/o11nplugin-redis.vmoapp?raw=true) 
 
 ### Supported platform version
 The Redis plug-in supports vRO 6.0 and later.
