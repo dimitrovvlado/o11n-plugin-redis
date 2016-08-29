@@ -4,7 +4,10 @@ import org.springframework.util.Assert;
 
 import com.vmware.o11n.sdk.modeldriven.extension.ExtensionMethod;
 
-import redis.clients.jedis.Jedis;
+import redis.clients.jedis.*;
+import redis.clients.jedis.params.geo.GeoRadiusParam;
+import redis.clients.jedis.params.sortedset.ZAddParams;
+import redis.clients.jedis.params.sortedset.ZIncrByParams;
 
 import java.util.Hashtable;
 import java.util.List;
@@ -365,6 +368,352 @@ public class Database {
     public String srandmember(String key) {
         try (Jedis jedis = connection.getResource(index)) {
             return jedis.srandmember(key);
+        }
+    }
+
+    @ExtensionMethod
+    public long strlen(String key) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.strlen(key);
+        }
+    }
+
+    @ExtensionMethod
+    public long zadd(String key, Hashtable<String, Double> scoreMembers, ZAddParams params) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (params != null && scoreMembers != null) {
+                return jedis.zadd(key, scoreMembers, params);
+            } else if (scoreMembers != null) {
+                return jedis.zadd(key, scoreMembers);
+            }
+            return jedis.strlen(key);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<String> zrange(String key, long start, long end) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zrange(key, start, end);
+        }
+    }
+
+    @ExtensionMethod
+    public long zrem(String key, String[] members) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zrem(key, members);
+        }
+    }
+
+    @ExtensionMethod
+    public double zincrby(String key, double score, String member, ZIncrByParams params) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (params != null) {
+                return jedis.zincrby(key, score, member, params);
+            }
+            return jedis.zincrby(key, score, member);
+        }
+    }
+
+    @ExtensionMethod
+    public long zrank(String key, String member) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zrank(key, member);
+        }
+    }
+
+    @ExtensionMethod
+    public long zrevrank(String key, String member) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zrevrank(key, member);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<String> zrevrange(String key, long start, long end) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zrevrange(key, start, end);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<Tuple> zrangeWithScores(String key, long start, long end) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zrangeWithScores(key, start, end);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<Tuple> zrevrangeWithScores(String key, long start, long end) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zrevrangeWithScores(key, start, end);
+        }
+    }
+
+    @ExtensionMethod
+    public long zcard(String key) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zcard(key);
+        }
+    }
+
+    @ExtensionMethod
+    public double zscore(String key, String member) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zscore(key, member);
+        }
+    }
+
+    @ExtensionMethod
+    public List<String> sort(String key, SortingParams sortingParams) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.sort(key, sortingParams);
+        }
+    }
+
+    @ExtensionMethod
+    public long zcount(String key, double min, double max) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zcount(key, min, max);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<String> zrangeByScore(String key, double min, double max, Integer offset, Integer count) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (offset != null && count != null) {
+                return jedis.zrangeByScore(key, min, max, offset, count);
+            }
+            return jedis.zrangeByScore(key, min, max);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<String> zrevrangeByScore(String key, double max, double min, Integer offset, Integer count) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (offset != null && count != null) {
+                return jedis.zrevrangeByScore(key, max, min, offset, count);
+            }
+            return jedis.zrevrangeByScore(key, min, max);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<Tuple> zrangeByScoreWithScores(String key, double min, double max, Integer offset, Integer count) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (offset != null && count != null) {
+                return jedis.zrangeByScoreWithScores(key, min, max, offset, count);
+            }
+            return jedis.zrangeByScoreWithScores(key, min, max);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<Tuple> zrevrangeByScoreWithScores(String key, double max, double min, Integer offset, Integer count) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (offset != null && count != null) {
+                return jedis.zrevrangeByScoreWithScores(key, max, min, offset, count);
+            }
+            return jedis.zrevrangeByScoreWithScores(key, max, min);
+        }
+    }
+
+    @ExtensionMethod
+    public long zremrangeByRank(String key, long start, long end) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zremrangeByRank(key, start, end);
+        }
+    }
+
+    @ExtensionMethod
+    public long zremrangeByScore(String key, double start, double end) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zremrangeByScore(key, start, end);
+        }
+    }
+
+    @ExtensionMethod
+    public long zlexcount(String key, String min, String max) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zlexcount(key, min, max);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<String> zrangeByLex(String key, String min, String max, Integer offset, Integer count) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (offset != null && count != null) {
+                return jedis.zrangeByLex(key, min, max, offset, count);
+            }
+            return jedis.zrangeByLex(key, min, max);
+        }
+    }
+
+    @ExtensionMethod
+    public Set<String> zrevrangeByLex(String key, String max, String min, Integer offset, Integer count) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (offset != null && count != null) {
+                return jedis.zrevrangeByLex(key, max, min, offset, count);
+            }
+            return jedis.zrevrangeByLex(key, max, min);
+        }
+    }
+
+    @ExtensionMethod
+    public long zremrangeByLex(String key, String min, String max) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.zremrangeByLex(key, min, max);
+        }
+    }
+
+    @ExtensionMethod
+    public long linsert(String key, Client.LIST_POSITION where, String pivot, String value) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.linsert(key, where, pivot, value);
+        }
+    }
+
+    @ExtensionMethod
+    public List<String> blpop(int timeout, String key) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.blpop(timeout, key);
+        }
+    }
+
+    @ExtensionMethod
+    public List<String> brpop(int timeout, String key) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.brpop(timeout, key);
+        }
+    }
+
+    @ExtensionMethod
+    public String echo(String string) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.echo(string);
+        }
+    }
+
+    /**
+     * Move the specified key from the currently selected DB to the specified destination DB. Note
+     * that this command returns 1 only if the key was successfully moved, and 0 if the target key was
+     * already there or if the source key was not found at all, so it is possible to use MOVE as a
+     * locking primitive.
+     * @param key
+     * @param dbIndex
+     * @return Integer reply, specifically: 1 if the key was moved 0 if the key was not moved because
+     *         already present on the target DB or was not found in the current DB.
+     */
+    @ExtensionMethod
+    public long move(String key, int dbIndex) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.move(key, dbIndex);
+        }
+    }
+
+    @ExtensionMethod
+    public long bitcount(String key, Long start, Long end) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (start != null && end != null) {
+                return jedis.bitcount(key, start, end);
+            }
+            return jedis.bitcount(key);
+        }
+    }
+
+    @ExtensionMethod
+    public long bitpos(String key, boolean value, BitPosParams params) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (params != null) {
+                return jedis.bitpos(key, value, params);
+            }
+            return jedis.bitpos(key, value);
+        }
+    }
+
+    @ExtensionMethod
+    public ScanResult hscan(String key, String cursor, ScanParams params) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (params != null) {
+                return jedis.hscan(key, cursor, params);
+            }
+            return jedis.hscan(key, cursor);
+        }
+    }
+
+    @ExtensionMethod
+    public ScanResult zscan(String key, String cursor, ScanParams params) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (params != null) {
+                return jedis.zscan(key, cursor, params);
+            }
+            return jedis.zscan(key, cursor);
+        }
+    }
+
+    @ExtensionMethod
+    public long pfcount(String key) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.pfcount(key);
+        }
+    }
+
+    @ExtensionMethod
+    public long pfadd(String key, String[] elements) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.pfadd(key, elements);
+        }
+    }
+
+    @ExtensionMethod
+    public long geoadd(String key, double longitude, double latitude, String member) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.geoadd(key, longitude, latitude, member);
+        }
+    }
+
+    @ExtensionMethod
+    public double geodist(String key, String member1, String member2, GeoUnit unit) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (unit != null) {
+                return jedis.geodist(key, member1, member2, unit);
+            }
+            return jedis.geodist(key, member1, member2);
+        }
+    }
+
+    @ExtensionMethod
+    public List<String> geohash(String key, String[] members) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.geohash(key, members);
+        }
+    }
+
+    @ExtensionMethod
+    public List<GeoCoordinate> geopos(String key, String[] members) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.geopos(key, members);
+        }
+    }
+
+    @ExtensionMethod
+    public List<GeoRadiusResponse> georadius(String key, double longitude, double latitude, double radius, GeoUnit
+            unit, GeoRadiusParam param) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (param != null) {
+                return jedis.georadius(key, longitude, latitude, radius, unit, param);
+            }
+            return jedis.georadius(key, longitude, latitude, radius, unit);
+        }
+    }
+
+    @ExtensionMethod
+    public List<GeoRadiusResponse> georadiusByMember(String key, String member, double radius, GeoUnit unit,
+                                                     GeoRadiusParam param) {
+        try (Jedis jedis = connection.getResource(index)) {
+            if (param != null) {
+                return jedis.georadiusByMember(key, member, radius, unit, param);
+            }
+            return jedis.georadiusByMember(key, member, radius, unit);
         }
     }
 
