@@ -835,4 +835,46 @@ public class Database {
             return jedis.randomKey();
         }
     }
+
+    @ExtensionMethod
+    public Object eval(String script, List<String> keys, List<String> args) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.eval(script, keys, args);
+        }
+    }
+
+    @ExtensionMethod
+    public Object evalsha(String sha1, List<String> keys, List<String> args) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.evalsha(sha1, keys, args);
+        }
+    }
+
+    @ExtensionMethod
+    public String scriptLoad(String script) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.scriptLoad(script);
+        }
+    }
+
+    @ExtensionMethod
+    public boolean scriptExists(String sha1) {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.scriptExists(sha1);
+        }
+    }
+
+    @ExtensionMethod
+    public void scriptKill() {
+        try (Jedis jedis = connection.getResource(index)) {
+            jedis.scriptKill();
+        }
+    }
+
+    @ExtensionMethod
+    public String scriptFlush() {
+        try (Jedis jedis = connection.getResource(index)) {
+            return jedis.scriptFlush();
+        }
+    }
 }
