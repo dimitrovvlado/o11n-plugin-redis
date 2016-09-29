@@ -6,6 +6,7 @@ Plug-in features:
 
  * Operations with hashes, lists, sets, sorted sets, geo locations
  * Operations for scripting with Lua
+ * Cluster configurations are currently not supported
 
 ### Plugin download
 [o11nplugin-redis-1.0.0.vmoapp](https://github.com/dimitrovvlado/o11n-plugin-redis/blob/master/dist/o11nplugin-redis.vmoapp?raw=true) 
